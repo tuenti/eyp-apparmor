@@ -1,6 +1,6 @@
 {
   "name": "eyp-apparmor",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "author": "eyp",
   "summary": "manages apparmor",
   "license": "Apache-2.0",
