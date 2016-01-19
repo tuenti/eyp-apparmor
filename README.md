@@ -1,5 +1,7 @@
 # apparmor
 
+**AtlasIT-AM/eyp-apparmor**: [![Build Status](https://travis-ci.org/AtlasIT-AM/eyp-apparmor.png?branch=master)](https://travis-ci.org/AtlasIT-AM/eyp-apparmor)
+
 #### Table of Contents
 
 1. [Overview](#overview)

@@ -1,5 +1,5 @@
 require 'spec_helper'
-describe 'apparmor', :type => 'class' do
+describe 'apparmor' do
 
   context 'with defaults for all parameters' do
     let :facts do
