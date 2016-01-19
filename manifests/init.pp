@@ -1,4 +1,4 @@
-class apparmor ($mode='disable') inherits params {
+class apparmor ($mode='disable') inherits apparmor::params {
 
   validate_re($mode, [ '^complain$', '^enforce$', '^disable$' ], "not a valid mode")
 
