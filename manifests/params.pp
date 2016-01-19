@@ -14,7 +14,7 @@ class apparmor::params {
 				{
 					case $::operatingsystemrelease
 					{
-						/^14.*$/:
+						/^14.*/:
 						{
 						}
 						default: { fail("Unsupported Ubuntu version! - $::operatingsystemrelease")  }
