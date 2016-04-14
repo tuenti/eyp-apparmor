@@ -1,6 +1,6 @@
 class apparmor ($mode='disable') inherits apparmor::params {
 
-  validate_re($mode, [ '^complain$', '^enforce$', '^disable$' ], "not a valid mode")
+  validate_re($mode, [ '^complain$', '^enforce$', '^disable$' ], 'not a valid mode')
 
   Exec {
     path => '/usr/sbin:/usr/bin:/sbin:/bin',
@@ -76,18 +76,18 @@ class apparmor ($mode='disable') inherits apparmor::params {
           # 0 processes are unconfined but have a profile defined.
           # root@prephp1:~#
 
-          exec { "set apparmor enforce":
+          exec { 'set apparmor enforce':
             #command => "aa-enforce /etc/apparmor.d/*; exit 0",
             command => 'bash -c \'for i in $(find /etc/apparmor.d -maxdepth 1 -type f); do aa-enforce $i; done; exit 0\'',
             require => Package['apparmor-utils'],
-            unless  => "apparmor_status | grep -E '0 profiles are loaded.\$'",
+            unless  => 'apparmor_status | grep -E \'0 profiles are loaded.\$\'',
           }
 
-          exec { "set apparmor $mode":
+          exec { "set apparmor ${mode}":
             #command => "aa-${mode} /etc/apparmor.d/*",
             command => "bash -c 'for i in $(find /etc/apparmor.d -maxdepth 1 -type f); do aa-${mode} \$i; done; exit 0'",
-            require => Exec["set apparmor enforce"],
-            unless  => "apparmor_status | grep -E '0 profiles are loaded.\$'",
+            require => Exec['set apparmor enforce'],
+            unless  => 'apparmor_status | grep -E \'0 profiles are loaded.\$\'',
           }
         }
       }
@@ -98,33 +98,33 @@ class apparmor ($mode='disable') inherits apparmor::params {
       {
         'disabled':
         {
-          exec { "set apparmor enforce":
-            command => "aa-enforce /etc/apparmor.d/*",
+          exec { 'set apparmor enforce':
+            command => 'aa-enforce /etc/apparmor.d/*',
             require => Package['apparmor-utils'],
           }
 
-          exec { "set apparmor $mode":
+          exec { "set apparmor ${mode}":
             command => "aa-${mode} /etc/apparmor.d/*",
-            require => Exec["set apparmor enforce"],
-            onlyif => "apparmor_status | grep -vE '0 profiles are loaded.\$' | grep -E ' profiles are loaded.\$| profiles are in ${mode} mode.\$' | awk '{ print \$1 }' | uniq | wc -l | grep 2",
+            require => Exec['set apparmor enforce'],
+            onlyif  => "apparmor_status | grep -vE '0 profiles are loaded.\$' | grep -E ' profiles are loaded.\$| profiles are in ${mode} mode.\$' | awk '{ print \$1 }' | uniq | wc -l | grep 2",
           }
         }
         default:
         {
-          exec { "set apparmor $mode":
+          exec { "set apparmor ${mode}":
             command => "aa-${mode} /etc/apparmor.d/*",
             require => Package['apparmor-utils'],
-            onlyif => "apparmor_status | grep -vE '0 profiles are loaded.\$' | grep -E ' profiles are loaded.\$| profiles are in ${mode} mode.\$' | awk '{ print \$1 }' | uniq | wc -l | grep 2",
+            onlyif  => "apparmor_status | grep -vE '0 profiles are loaded.\$' | grep -E ' profiles are loaded.\$| profiles are in ${mode} mode.\$' | awk '{ print \$1 }' | uniq | wc -l | grep 2",
           }
         }
       }
     }
     'enforce':
     {
-      exec { "set apparmor $mode":
+      exec { "set apparmor ${mode}":
         command => "aa-${mode} /etc/apparmor.d/*",
         require => Package['apparmor-utils'],
-        onlyif => "apparmor_status | grep -vE '0 profiles are loaded.\$' | grep -E ' profiles are loaded.\$| profiles are in ${mode} mode.\$' | awk '{ print \$1 }' | uniq | wc -l | grep 2",
+        onlyif  => "apparmor_status | grep -vE '0 profiles are loaded.\$' | grep -E ' profiles are loaded.\$| profiles are in ${mode} mode.\$' | awk '{ print \$1 }' | uniq | wc -l | grep 2",
       }
     }
   }
