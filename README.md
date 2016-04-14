@@ -40,23 +40,23 @@ This module requires pluginsync enabled
 
 ### Beginning with apparmor
 
-The very basic steps needed for a user to get the module up and running.
-
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you may wish to include an additional section here: Upgrading
-(For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
+```puppet
+class { 'apparmor':
+  mode => 'disable',
+}
+```
 
 ## Usage
 
-Put the classes, types, and resources for customizing, configuring, and doing
-the fancy stuff with your module here.
+Just a single class to set apparmor to disable, complain or enforce
 
 ## Reference
 
-Here, list the classes, types, providers, facts, etc contained in your module.
-This section should include all of the under-the-hood workings of your module so
-people know what the module is touching on their system but don't need to mess
-with things. (We are working on automating this section!)
+### classes
+
+#### apparmor
+
+* **mode**: disable, complain, enforce
 
 ## Limitations
 
