@@ -1,6 +1,6 @@
 # apparmor
 
-**AtlasIT-AM/eyp-apparmor**: [![Build Status](https://travis-ci.org/AtlasIT-AM/eyp-apparmor.png?branch=master)](https://travis-ci.org/AtlasIT-AM/eyp-apparmor)
+**NTTCom-MS/eyp-apparmor**: [![Build Status](https://travis-ci.org/NTTCom-MS/eyp-apparmor.png?branch=master)](https://travis-ci.org/NTTCom-MS/eyp-apparmor)
 
 #### Table of Contents
 
