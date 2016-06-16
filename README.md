@@ -1,6 +1,6 @@
 # apparmor
 
-**AtlasIT-AM/eyp-apparmor**: [![Build Status](https://travis-ci.org/AtlasIT-AM/eyp-apparmor.png?branch=master)](https://travis-ci.org/AtlasIT-AM/eyp-apparmor)
+**NTTCom-MS/eyp-apparmor**: [![Build Status](https://travis-ci.org/NTTCom-MS/eyp-apparmor.png?branch=master)](https://travis-ci.org/NTTCom-MS/eyp-apparmor)
 
 #### Table of Contents
 
@@ -22,11 +22,16 @@ Manages AppArmor
 
 ## Module Description
 
-Allows you to enforce globally a mode for AppArmor:
+Allows you to enforce a global mode for AppArmor.
+
+**Ubuntu**:
 * complain
 * enforce
-* disable (by default)
+* disable (default)
 
+**SuSE**:
+* complain (default)
+* enforce
 
 ## Setup
 
@@ -62,6 +67,7 @@ Just a single class to set apparmor to disable, complain or enforce
 
 Tested on:
 * Ubuntu 14.04
+* SLES 11 SP3
 
 ## Development
 

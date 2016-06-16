@@ -16,12 +16,31 @@ class apparmor::params {
           {
             /^14.*/:
             {
+              $default_mode='disable'
             }
             default: { fail("Unsupported Ubuntu version! - ${::operatingsystemrelease}")  }
           }
         }
         'Debian': { fail('Unsupported')  }
         default: { fail('Unsupported Debian flavour!')  }
+      }
+    }
+    'Suse':
+    {
+      case $::operatingsystem
+      {
+        'SLES':
+        {
+          case $::operatingsystemrelease
+          {
+            '11.3':
+            {
+              $default_mode='complain'
+            }
+            default: { fail("Unsupported operating system ${::operatingsystem} ${::operatingsystemrelease}") }
+          }
+        }
+        default: { fail("Unsupported operating system ${::operatingsystem}") }
       }
     }
     default: { fail('Unsupported OS!')  }

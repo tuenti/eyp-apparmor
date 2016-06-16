@@ -1,4 +1,6 @@
-class apparmor ($mode='disable') inherits apparmor::params {
+class apparmor(
+                $mode = $apparmor::params::default_mode
+              ) inherits apparmor::params {
 
   validate_re($mode, [ '^complain$', '^enforce$', '^disable$' ], 'not a valid mode')
 
@@ -75,6 +77,11 @@ class apparmor ($mode='disable') inherits apparmor::params {
           # 0 processes are in complain mode.
           # 0 processes are unconfined but have a profile defined.
           # root@prephp1:~#
+
+          if($::osfamily=='SuSE')
+          {
+            fail('Unsupported mode on SuSE, please use complain instead')
+          }
 
           exec { 'set apparmor enforce':
             #command => "aa-enforce /etc/apparmor.d/*; exit 0",
