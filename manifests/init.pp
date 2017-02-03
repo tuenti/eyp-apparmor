@@ -134,6 +134,7 @@ class apparmor(
         onlyif  => "apparmor_status | grep -vE '0 profiles are loaded.\$' | grep -E ' profiles are loaded.\$| profiles are in ${mode} mode.\$' | awk '{ print \$1 }' | uniq | wc -l | grep 2",
       }
     }
+    default: { fail('Unsupported')}
   }
 
 }
