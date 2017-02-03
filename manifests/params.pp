@@ -14,7 +14,7 @@ class apparmor::params {
         {
           case $::operatingsystemrelease
           {
-            /^14.*/:
+            /^1[46].*/:
             {
               $default_mode='disable'
             }
