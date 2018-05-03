@@ -23,8 +23,3 @@ matrix:
     dist: trusty
     bundler_args:
     script: bundle exec rake validate
-  - rvm: default
-    env: JOB="rake rspec"
-    dist: trusty
-    bundler_args:
-    script: bundle exec rake spec
