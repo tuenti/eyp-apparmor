@@ -41,7 +41,7 @@ class apparmor::params {
             {
               $default_mode='complain'
             }
-            default: { fail("Unsupported operating system ${::operatingsystem} ${::operatingsystemrelease}") }
+            default: { fail("Unsupported SLES version ${::operatingsystem} ${::operatingsystemrelease}") }
           }
         }
         default: { fail("Unsupported operating system ${::operatingsystem}") }
