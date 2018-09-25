@@ -37,6 +37,10 @@ class apparmor::params {
             {
               $default_mode='complain'
             }
+            '12.3':
+            {
+              $default_mode='complain'
+            }
             default: { fail("Unsupported operating system ${::operatingsystem} ${::operatingsystemrelease}") }
           }
         }
