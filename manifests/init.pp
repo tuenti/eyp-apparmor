@@ -8,7 +8,7 @@ class apparmor(
     path => '/usr/sbin:/usr/bin:/sbin:/bin',
   }
 
-  package { 'apparmor-utils':
+  package { $apparmor::params::packages:
     ensure => 'installed',
   }
 

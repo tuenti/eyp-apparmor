@@ -8,6 +8,7 @@ class apparmor::params {
     }
     'Debian':
     {
+      $packages = [ 'apparmor-utils' ]
       case $::operatingsystem
       {
         'Ubuntu':
@@ -28,6 +29,7 @@ class apparmor::params {
     }
     'Suse':
     {
+      $packages = [ 'apparmor-utils', 'apparmor-parser' ]
       case $::operatingsystem
       {
         'SLES':
