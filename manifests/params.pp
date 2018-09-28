@@ -41,7 +41,7 @@ class apparmor::params {
             }
             '12.3':
             {
-              $apparmor_dir = '/etc/apparmor'
+              $apparmor_dir = '/etc/apparmor.d'
               $default_mode='complain'
             }
             default: { fail("Unsupported SLES version ${::operatingsystem} ${::operatingsystemrelease}") }
