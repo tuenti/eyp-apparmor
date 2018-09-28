@@ -8,6 +8,7 @@ class apparmor::params {
     }
     'Debian':
     {
+      $packages = [ 'apparmor-utils' ]
       case $::operatingsystem
       {
         'Ubuntu':
@@ -28,6 +29,7 @@ class apparmor::params {
     }
     'Suse':
     {
+      $packages = [ 'apparmor-utils', 'apparmor-parser' ]
       case $::operatingsystem
       {
         'SLES':
@@ -41,7 +43,7 @@ class apparmor::params {
             }
             '12.3':
             {
-              $apparmor_dir = '/etc/apparmor'
+              $apparmor_dir = '/etc/apparmor.d'
               $default_mode='complain'
             }
             default: { fail("Unsupported SLES version ${::operatingsystem} ${::operatingsystemrelease}") }
