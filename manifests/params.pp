@@ -16,6 +16,7 @@ class apparmor::params {
           {
             /^1[468].*/:
             {
+              $apparmor_dir = '/etc/apparmor.d'
               $default_mode='disable'
             }
             default: { fail("Unsupported Ubuntu version! - ${::operatingsystemrelease}")  }
@@ -35,10 +36,12 @@ class apparmor::params {
           {
             '11.3':
             {
+              $apparmor_dir = '/etc/apparmor.d'
               $default_mode='complain'
             }
             '12.3':
             {
+              $apparmor_dir = '/etc/apparmor'
               $default_mode='complain'
             }
             default: { fail("Unsupported SLES version ${::operatingsystem} ${::operatingsystemrelease}") }
