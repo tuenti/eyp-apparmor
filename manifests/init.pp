@@ -85,7 +85,7 @@ class apparmor(
 
           exec { 'set apparmor enforce':
             #command => "aa-enforce /etc/apparmor.d/*; exit 0",
-            command => "bash -c 'for i in $(find ${apparmor::params::apparmor_dir} -maxdepth 1 -type f); do aa-enforce $i; done; exit 0'",
+            command => "bash -c 'for i in $(find ${apparmor::params::apparmor_dir} -maxdepth 1 -type f); do aa-enforce \$i; done; exit 0'",
             require => Package['apparmor-utils'],
             unless  => 'apparmor_status | grep -E \'0 profiles are loaded.\$\'',
           }
