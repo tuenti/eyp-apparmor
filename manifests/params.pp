@@ -41,7 +41,7 @@ class apparmor::params {
               $apparmor_dir = '/etc/apparmor.d'
               $default_mode='complain'
             }
-            '12.3':
+            /^12.[34]/:
             {
               $apparmor_dir = '/etc/apparmor.d'
               $default_mode='complain'
