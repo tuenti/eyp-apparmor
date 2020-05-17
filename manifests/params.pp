@@ -20,10 +20,28 @@ class apparmor::params {
               $apparmor_dir = '/etc/apparmor.d'
               $default_mode='disable'
             }
+            /^20.*/:
+            {
+              $apparmor_dir = '/etc/apparmor.d'
+              $default_mode='disable'
+            }
             default: { fail("Unsupported Ubuntu version! - ${::operatingsystemrelease}")  }
           }
         }
-        'Debian': { fail('Unsupported')  }
+        'Debian':
+        {
+        'Ubuntu':
+        {
+          case $::operatingsystemrelease
+          {
+            /^10.*/:
+            {
+              $apparmor_dir = '/etc/apparmor.d'
+              $default_mode='disable'
+            }
+            default: { fail("Unsupported Debian version! - ${::operatingsystemrelease}")  }
+          }
+        }
         default: { fail('Unsupported Debian flavour!')  }
       }
     }
