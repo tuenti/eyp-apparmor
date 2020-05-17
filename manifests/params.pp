@@ -30,8 +30,6 @@ class apparmor::params {
         }
         'Debian':
         {
-        'Ubuntu':
-        {
           case $::operatingsystemrelease
           {
             /^10.*/:
