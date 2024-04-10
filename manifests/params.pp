@@ -37,6 +37,11 @@ class apparmor::params {
               $apparmor_dir = '/etc/apparmor.d'
               $default_mode='disable'
             }
+            /^12.*/:
+            {
+              $apparmor_dir = '/etc/apparmor.d'
+              $default_mode='disable'
+            }
             default: { fail("Unsupported Debian version! - ${::operatingsystemrelease}")  }
           }
         }
