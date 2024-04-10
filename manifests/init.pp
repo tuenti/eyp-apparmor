@@ -2,7 +2,11 @@ class apparmor(
                 $mode = $apparmor::params::default_mode
               ) inherits apparmor::params {
 
-  validate_re($mode, [ '^complain$', '^enforce$', '^disable$' ], 'not a valid mode')
+  # validate_re($mode, [ '^complain$', '^enforce$', '^disable$' ], 'not a valid mode')
+  if ! $mode in  [ 'complain', 'enforce', 'disable' ] {
+    fail('Invalid apparmor operation mode')
+  }
+}
 
   Exec {
     path => '/usr/sbin:/usr/bin:/sbin:/bin',
