@@ -6,7 +6,6 @@ class apparmor(
   if ! $mode in  [ 'complain', 'enforce', 'disable' ] {
     fail('Invalid apparmor operation mode')
   }
-}
 
   Exec {
     path => '/usr/sbin:/usr/bin:/sbin:/bin',
