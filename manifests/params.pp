@@ -48,7 +48,6 @@ class apparmor::params {
               fail("Unsupported Debian release: '${::lsbdistcodename}'")
             }
           }
-          default: { fail('Unsupported Debian flavour!')  }
         }
         'Suse':
         {
