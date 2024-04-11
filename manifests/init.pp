@@ -67,15 +67,14 @@ class apparmor(
       {
         'disabled':
         {
-          exec { "set apparmor enforce for ${profile}":
+          exec { "set apparmor from ${::eyp_apparmor_current_status} to enforce for ${profile}":
             command => "aa-enforce ${apparmor::params::apparmor_dir}/${profile}",
             require => Package['apparmor-utils'],
           }
-
-          exec { "set apparmor ${mode} for ${profile}":
+          exec { "set apparmor from from ${::eyp_apparmor_current_status} to ${mode} for ${profile}":
             command => "aa-${mode} ${apparmor::params::apparmor_dir}/${profile}",
-            require => Exec['set apparmor enforce'],
-            onlyif  => "apparmor_status | grep -vE '0 profiles are loaded.\$' | grep -E ' profiles are loaded.\$| profiles are in ${mode} mode.\$' | awk '{ print \$1 }' | uniq | wc -l | grep 2",
+            require => Exec[ "set apparmor ${mode} for ${profile}" ],
+            onlyif  => "apparmor_status | grep ${profile}",
           }
         }
         default:
@@ -83,7 +82,7 @@ class apparmor(
           exec { "set apparmor ${mode} for ${profile}":
             command => "aa-${mode} ${apparmor::params::apparmor_dir}/${profile}",
             require => Package['apparmor-utils'],
-            onlyif  => "apparmor_status | grep -vE '0 profiles are loaded.\$' | grep -E ' profiles are loaded.\$| profiles are in ${mode} mode.\$' | awk '{ print \$1 }' | uniq | wc -l | grep 2",
+            unless  => "apparmor_status | grep ${profile}",
           }
         }
       }
@@ -93,7 +92,7 @@ class apparmor(
       exec { "set apparmor ${mode} for ${profile}":
         command => "aa-${mode} ${apparmor::params::apparmor_dir}/${profile}",
         require => Package['apparmor-utils'],
-        onlyif  => "apparmor_status | grep -vE '0 profiles are loaded.\$' | grep -E ' profiles are loaded.\$| profiles are in ${mode} mode.\$' | awk '{ print \$1 }' | uniq | wc -l | grep 2",
+        onlyif  => "apparmor_status | grep ${profile}",
       }
     }
     default: { fail('Unsupported')}
