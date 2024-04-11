@@ -1,4 +1,24 @@
+# Class: apparmor::params
+#
+# This class defines default parameters used by the main module class apparmor
+# Operating Systems differences in names and paths are addressed here
+#
+# == Variables
+#
+# Refer to apparmor class for the variables defined here.
+#
+
 class apparmor::params {
+
+  $mode = $::operatingsystem ? {
+    default => 'disable',
+  }
+  $apparmor_dir = $::operatingsystem ? {
+    default => '/etc/apparmor.d',
+  }
+  $profile = $::operatingsystem ? {
+    default => '*',
+  }
 
   case $::osfamily
   {
@@ -17,13 +37,9 @@ class apparmor::params {
           {
             /^1[468].*/:
             {
-              $apparmor_dir = '/etc/apparmor.d'
-              $default_mode='disable'
             }
             /^20.*/:
             {
-              $apparmor_dir = '/etc/apparmor.d'
-              $default_mode='disable'
             }
             default: { fail("Unsupported Ubuntu version! - ${::operatingsystemrelease}")  }
           }
@@ -34,14 +50,9 @@ class apparmor::params {
           {
             /^10.*/:
             {
-              $apparmor_dir = '/etc/apparmor.d'
-              $default_mode='disable'
-              $default_profile='*'
             }
             /^12.*/:
             {
-              $apparmor_dir = '/etc/apparmor.d'
-              $default_profile='*'
             }
             default: { fail("Unsupported Debian version! - ${::operatingsystemrelease}")  }
           }
@@ -60,12 +71,10 @@ class apparmor::params {
           {
             '11.3':
             {
-              $apparmor_dir = '/etc/apparmor.d'
               $default_mode='complain'
             }
             /^12.[34]/:
             {
-              $apparmor_dir = '/etc/apparmor.d'
               $default_mode='complain'
             }
             default: { fail("Unsupported SLES version ${::operatingsystem} ${::operatingsystemrelease}") }

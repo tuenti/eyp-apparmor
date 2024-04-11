@@ -1,6 +1,23 @@
+# = Class: apparmor
+#
+# This is the main apparmor class
+#
+#
+# == Parameters
+#
+# Standard class parameters
+# Define the general class behaviour and customizations
+#
+# [*mode*]
+#  Sets the mode for a profile/s
+#  Allowed values are [ 'complain', 'enforce', 'disable' ]
+#
+# [*profile*]
+#  Can be a profile under the profiles folder or * for everything 
+
 class apparmor(
-                $mode    = $apparmor::params::default_mode,
-                $profile = $apparmor::params::default_profile
+                String $mode    = $apparmor::params::mode,
+                String $profile = $apparmor::params::profile
               ) inherits apparmor::params {
 
   if ! $mode in  [ 'complain', 'enforce', 'disable' ] {
@@ -29,13 +46,13 @@ class apparmor(
             fail('Unsupported mode on SuSE, please use complain instead')
           }
 
-          exec { 'set apparmor enforce':
+          exec { "set apparmor enforce for ${profile}":
             command => "aa-enforce ${apparmor::params::apparmor_dir}/${profile}; exit 0",
             require => Package['apparmor-utils'],
             unless  => 'apparmor_status | grep -E \'0 profiles are loaded.\$\'',
           }
 
-          exec { "set apparmor ${mode}":
+          exec { "set apparmor ${mode} for ${profile}":
             command => "aa-${mode} ${apparmor::params::apparmor_dir}/${profile}",
             #command => "bash -c 'for i in $(find ${apparmor::params::apparmor_dir} -maxdepth 1 -type f); do aa-${mode} \$i; done; exit 0'",
             require => Exec['set apparmor enforce'],
@@ -50,12 +67,12 @@ class apparmor(
       {
         'disabled':
         {
-          exec { 'set apparmor enforce':
+          exec { "set apparmor enforce for ${profile}":
             command => "aa-enforce ${apparmor::params::apparmor_dir}/${profile}",
             require => Package['apparmor-utils'],
           }
 
-          exec { "set apparmor ${mode}":
+          exec { "set apparmor ${mode} for ${profile}":
             command => "aa-${mode} ${apparmor::params::apparmor_dir}/${profile}",
             require => Exec['set apparmor enforce'],
             onlyif  => "apparmor_status | grep -vE '0 profiles are loaded.\$' | grep -E ' profiles are loaded.\$| profiles are in ${mode} mode.\$' | awk '{ print \$1 }' | uniq | wc -l | grep 2",
@@ -63,7 +80,7 @@ class apparmor(
         }
         default:
         {
-          exec { "set apparmor ${mode}":
+          exec { "set apparmor ${mode} for ${profile}":
             command => "aa-${mode} ${apparmor::params::apparmor_dir}/${profile}",
             require => Package['apparmor-utils'],
             onlyif  => "apparmor_status | grep -vE '0 profiles are loaded.\$' | grep -E ' profiles are loaded.\$| profiles are in ${mode} mode.\$' | awk '{ print \$1 }' | uniq | wc -l | grep 2",
@@ -73,7 +90,7 @@ class apparmor(
     }
     'enforce':
     {
-      exec { "set apparmor ${mode}":
+      exec { "set apparmor ${mode} for ${profile}":
         command => "aa-${mode} ${apparmor::params::apparmor_dir}/${profile}",
         require => Package['apparmor-utils'],
         onlyif  => "apparmor_status | grep -vE '0 profiles are loaded.\$' | grep -E ' profiles are loaded.\$| profiles are in ${mode} mode.\$' | awk '{ print \$1 }' | uniq | wc -l | grep 2",
