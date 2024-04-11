@@ -17,7 +17,7 @@ class apparmor::params {
     default => '/etc/apparmor.d',
   }
   $profile = $::operatingsystem ? {
-    default => '*',
+    default => '',
   }
 
   case $::osfamily

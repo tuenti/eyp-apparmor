@@ -71,18 +71,20 @@ class apparmor(
             command => "aa-enforce ${apparmor::params::apparmor_dir}/${profile}",
             require => Package['apparmor-utils'],
           }
-          exec { "set apparmor from from ${::eyp_apparmor_current_status} to ${mode} for ${profile}":
+          exec { "set apparmor from ${::eyp_apparmor_current_status} to ${mode} for ${profile}":
             command => "aa-${mode} ${apparmor::params::apparmor_dir}/${profile}",
             require => Exec[ "set apparmor ${mode} for ${profile}" ],
-            onlyif  => "apparmor_status | grep ${profile}",
+            # onlyif  => "apparmor_status | grep ${profile}",
+            onlyif    => "aa-status  --json | jq  -r  '.profiles  | with_entries(select(.key|match("${profile}";"i")))' | grep -q ${profile}",
           }
         }
         default:
         {
-          exec { "set apparmor ${mode} for ${profile}":
+          exec { "set apparmor from ${::eyp_apparmor_current_status} to ${mode} for ${profile}":
             command => "aa-${mode} ${apparmor::params::apparmor_dir}/${profile}",
             require => Package['apparmor-utils'],
-            unless  => "apparmor_status | grep ${profile}",
+            # unless  => "apparmor_status | grep ${profile}",
+            unless  => "aa-status  --json | jq  -r  '.profiles  | with_entries(select(.key|match("${profile}";"i")))' | grep -q ${profile}",
           }
         }
       }
@@ -92,10 +94,10 @@ class apparmor(
       exec { "set apparmor ${mode} for ${profile}":
         command => "aa-${mode} ${apparmor::params::apparmor_dir}/${profile}",
         require => Package['apparmor-utils'],
-        onlyif  => "apparmor_status | grep ${profile}",
+        # onlyif  => "apparmor_status | grep -q ${profile}",
+        onlyif    => "aa-status  --json | jq  -r  '.profiles  | with_entries(select(.key|match("${profile}";"i")))' | grep -q ${profile}",
       }
     }
     default: { fail('Unsupported')}
   }
-
 }
