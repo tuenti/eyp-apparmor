@@ -1,5 +1,5 @@
 class apparmor(
-                $mode    = $apparmor::params::default_mode
+                $mode    = $apparmor::params::default_mode,
                 $profile = $apparmor::params::default_profile
               ) inherits apparmor::params {
 
