@@ -22,7 +22,7 @@ class apparmor::params {
 
   case $::osfamily
   {
-    'redhat':
+    'Redhat':
     {
       fail('This is my sandbox, I\'m not allowed to go in the deep end - Ralph Wiggum')
     }
@@ -35,54 +35,45 @@ class apparmor::params {
         {
           case $::operatingsystemrelease
           {
-            /^1[468].*/:
-            {
-            }
-            /^20.*/:
-            {
-            }
+            /^1[468].*/: { }
+            /^20.*/: { }
             default: { fail("Unsupported Ubuntu version! - ${::operatingsystemrelease}")  }
           }
         }
         'Debian':
         {
-          case $::operatingsystemrelease
-          {
-            /^10.*/:
-            {
+          case $::lsbdistcodename {
+            /buster|bullseye|bookworm/: { }
+            default: {
+              fail("Unsupported Debian release: '${::lsbdistcodename}'")
             }
-            /^12.*/:
-            {
-            }
-            default: { fail("Unsupported Debian version! - ${::operatingsystemrelease}")  }
           }
+          default: { fail('Unsupported Debian flavour!')  }
         }
-        default: { fail('Unsupported Debian flavour!')  }
-      }
-    }
-    'Suse':
-    {
-      $packages = [ 'apparmor-utils', 'apparmor-parser' ]
-      case $::operatingsystem
-      {
-        'SLES':
+        'Suse':
         {
-          case $::operatingsystemrelease
-          {
-            '11.3':
+          $packages = [ 'apparmor-utils', 'apparmor-parser' ]
+          case $::operatingsystem {
+            'SLES':
             {
-              $default_mode='complain'
+              case $::operatingsystemrelease
+              {
+                '11.3':
+                {
+                  $default_mode='complain'
+                }
+                /^12.[34]/:
+                {
+                  $default_mode='complain'
+                }
+                default: { fail("Unsupported SLES version ${::operatingsystem} ${::operatingsystemrelease}") }
+              }
             }
-            /^12.[34]/:
-            {
-              $default_mode='complain'
-            }
-            default: { fail("Unsupported SLES version ${::operatingsystem} ${::operatingsystemrelease}") }
+            default: { fail("Unsupported operating system ${::operatingsystem}") }
           }
         }
-        default: { fail("Unsupported operating system ${::operatingsystem}") }
+        default: { fail('Unsupported OS!')  }
       }
     }
-    default: { fail('Unsupported OS!')  }
   }
 }
