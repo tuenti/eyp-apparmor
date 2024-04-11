@@ -75,7 +75,7 @@ class apparmor(
             command => "aa-${mode} ${apparmor::params::apparmor_dir}/${profile}",
             require => Exec[ "set apparmor ${mode} for ${profile}" ],
             # onlyif  => "apparmor_status | grep ${profile}",
-            onlyif    => 'aa-status  --json | jq  -r  '.profiles  | with_entries(select(.key|match("${profile}";"i")))' | grep -q ${profile}',
+            onlyif    => "aa-status  --json | jq  -r  '.profiles | with_entries(select(.key|match(\"${profile}\";\"i\")))' | grep -q ${profile}",
           }
         }
         default:
@@ -84,7 +84,7 @@ class apparmor(
             command => "aa-${mode} ${apparmor::params::apparmor_dir}/${profile}",
             require => Package['apparmor-utils'],
             # unless  => "apparmor_status | grep ${profile}",
-            unless  => 'aa-status  --json | jq  -r  '.profiles  | with_entries(select(.key|match("${profile}";"i")))' | grep -q ${profile}',
+            unless  => "aa-status  --json | jq  -r  '.profiles | with_entries(select(.key|match(\"${profile}\";\"i\")))' | grep -q ${profile}",
           }
         }
       }
@@ -95,7 +95,7 @@ class apparmor(
         command => "aa-${mode} ${apparmor::params::apparmor_dir}/${profile}",
         require => Package['apparmor-utils'],
         # onlyif  => "apparmor_status | grep -q ${profile}",
-        onlyif    => 'aa-status  --json | jq  -r  '.profiles  | with_entries(select(.key|match("${profile}";"i")))' | grep -q ${profile}',
+        onlyif    => "aa-status  --json | jq  -r  '.profiles | with_entries(select(.key|match(\"${profile}\";\"i\")))' | grep -q ${profile}",
       }
     }
     default: { fail('Unsupported')}
