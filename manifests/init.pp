@@ -68,11 +68,11 @@ class apparmor(
         'disabled':
         {
           exec { "set apparmor from ${::eyp_apparmor_current_status} to enforce for ${profile}":
-            command => "aa-enforce ${apparmor::params::apparmor_dir}/${profile}",
+            command => "aa-enforce -d ${apparmor::params::apparmor_dir} ${profile}",
             require => Package['apparmor-utils'],
           }
           exec { "set apparmor from ${::eyp_apparmor_current_status} to ${mode} for ${profile}":
-            command => "aa-${mode} ${apparmor::params::apparmor_dir}/${profile}",
+            command => "aa-${mode} -d ${apparmor::params::apparmor_dir} ${profile}",
             require => Exec[ "set apparmor ${mode} for ${profile}" ],
             # onlyif  => "apparmor_status | grep ${profile}",
             onlyif    => "aa-status  --json | jq  -r  '.profiles | with_entries(select(.key|match(\"${profile}\";\"i\")))' | grep -q ${profile}",
@@ -81,7 +81,7 @@ class apparmor(
         default:
         {
           exec { "set apparmor from ${::eyp_apparmor_current_status} to ${mode} for ${profile}":
-            command => "aa-${mode} ${apparmor::params::apparmor_dir}/${profile}",
+            command => "aa-${mode} -d ${apparmor::params::apparmor_dir} ${profile}",
             require => Package['apparmor-utils'],
             # unless  => "apparmor_status | grep ${profile}",
             unless  => "aa-status  --json | jq  -r  '.profiles | with_entries(select(.key|match(\"${profile}\";\"i\")))' | grep -q ${profile}",
@@ -92,7 +92,7 @@ class apparmor(
     'enforce':
     {
       exec { "set apparmor ${mode} for ${profile}":
-        command => "aa-${mode} ${apparmor::params::apparmor_dir}/${profile}",
+        command => "aa-${mode} -d ${apparmor::params::apparmor_dir} ${profile}",
         require => Package['apparmor-utils'],
         # onlyif  => "apparmor_status | grep -q ${profile}",
         onlyif    => "aa-status  --json | jq  -r  '.profiles | with_entries(select(.key|match(\"${profile}\";\"i\")))' | grep -q ${profile}",
